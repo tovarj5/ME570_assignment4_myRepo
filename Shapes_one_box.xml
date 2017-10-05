@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shapes>
+    <shape>
+        <id>1</id>
+        <color>
+            <red> 0.5 </red>
+            <green> 0.0 </green>
+            <blue> 0.5 </blue>
+        </color>
+        <translation>
+            <x>3</x>
+            <y>6</y>
+            <z>9</z>
+        </translation>
+        <rotation>
+            <x>90</x>
+            <y>45</y>
+            <z>22.5</z>
+        </rotation>
+        <scale>
+            <x>2</x>
+            <y>4</y>
+            <z>6</z>
+        </scale>
+        <box>
+            <height>9</height>
+            <width>8</width>
+            <depth>7</depth>
+        </box>
+    </shape>
+</shapes>
