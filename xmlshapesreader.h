@@ -10,14 +10,16 @@ class Shape;
 
 class XmlShapesReader
 {
+
 public:
     //XmlShapesReader(LinkedList *linkedlist);
     XmlShapesReader(std::list<Shape*> *linkedlist);
     bool read(QIODevice *device);
     QString errorString() const;
 
-signals:
-    void on_empty_input(QString name, QString property, double &value);
+//signals:
+//    void on_empty_input(QString name, QString property, double &value);
+//    void signal_likedList_changed(Shape *editShape);
 
 protected:
     QXmlStreamReader mReader;

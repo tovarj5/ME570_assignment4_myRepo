@@ -35,12 +35,6 @@ private slots:
 
     void close();
 
-    void on_propertyComboBox_currentTextChanged(const QString &arg1);
-
-    void on_addShapeButton_clicked();
-
-    void on_propertyComboBox_activated(const QString &arg1);
-
     void on_addShapeButton_2_clicked();
 
     void on_boxRadioButton_2_toggled(bool checked);
@@ -54,6 +48,8 @@ private slots:
     void on_actionOpen_Create_Shape_Dialog_triggered();
 
     void on_actionOpen_Output_Dock_triggered();
+
+    //void on_changed_linkedList(Shape *editShape);
 
 private:
     Ui::MainWindow *ui;

@@ -10,6 +10,7 @@ XmlShapesReader::XmlShapesReader(std::list <Shape*> *linkedlist):
     mLinkedList{linkedlist}
 {
 //    mLinkedList.push_back(linkedlist);
+    //connect(this,SIGNAL(XmlShapesReader.on_likedList_changed(Shape *editShape)),MainWindow,SLOT(MainWindow))
 }
 QString XmlShapesReader::errorString() const
 {
@@ -103,9 +104,10 @@ void XmlShapesReader::read_shape()
             else
                 mReader.raiseError(QObject::tr("Corruption in file. Scale value missing."));
 
-            //mLinkedList->push_back(shape);
             //if(valid_values)
                 mLinkedList->push_back(shape);
+
+                //FIND WAY TO ADD ITEM TO THE LISTWIDGET!!!!!!
 
         }
         else

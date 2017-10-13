@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
    //connect(ui->MainWindow.actionExit(),signals(MainWindow.),slots(MainWindow.on_emptyInput()));
     connect(ui->actionExit,SIGNAL(triggered(bool)),SLOT(close()));
     //connect(Shape, SIGNAL(on_emptyInput(QString,double&)),SLOT(on_emptyInput(QString,double&)));
+   //connect(sender,SIGNAL(signal_changed_linkedList(Shape*)),this,SLOT(on_changed_linkedList(Shape*)));
 }
 
 MainWindow::~MainWindow()
@@ -154,27 +155,18 @@ void MainWindow::close()
 
 void MainWindow::on_emptyInput(QString XmlProperty, double &xmlValue)
 {
-//    QMessageBox notify = new QMessageBox;
-
     bool ok;
+    //Code to get text input from the user. Useful reference Don't delete
 //     QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
 //                                          tr("User name:"), QLineEdit::Normal,
 //                                          QDir::home().dirName(), &ok);
+    //Get numeric input from the user.
     double value = QInputDialog::getDouble(this,tr("Missing Xml Property!"),
                                            tr("Your file is missing a property\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
-     if (ok)
+
+    //If user hit ok use the value from the user.
+    if (ok)
          ui->outputDockPlainText->appendPlainText(QString::number(value));
-
-
-
-//    if (xmlValue == NULL)
-//    {
-//        getValue.labelText() = "Missing Value.";
-//        getValue.setTextValue( "Missing Property in Xml File: " + XmlProperty + "\n\n Please Input Value.");
-//        getValue.setInputMode(2); //using double as input mode.
-//        QObject Value{-1};
-//        getValue.open(Value,"doubleValueSelected");
-//    }
 
 }
 
@@ -184,6 +176,9 @@ void MainWindow::on_addShapeButton_2_clicked()
     //Add the values of the current property to the new shape.
     double x,y,z;
     int id = ui->lineEdit_Id_2->text().toInt();
+    //Create string to add to the  Listwidget.
+    QString ListItem = "Id: " + QString::number(id) + "\t Shape: ";
+
 
         //If we are talking about the dimensions, find out what type of shape we are creating.
         if(ui->boxRadioButton_2->isChecked())
@@ -194,6 +189,7 @@ void MainWindow::on_addShapeButton_2_clicked()
             double d = ui->lineEdit_DimZ->text().toDouble();
             newBox->set_size(h,w,d);
             newShape = newBox;
+            ListItem.append("Box");
         }
         else if (ui->coneRadioButton_2->isChecked())
         {
@@ -203,6 +199,7 @@ void MainWindow::on_addShapeButton_2_clicked()
             double radY = ui->lineEdit_DimZ->text().toDouble();
             newCone->set_size(h,radX,radY);
             newShape = newCone;
+            ListItem.append("Cone");
         }
         else if (ui->ellipsoidRadioButton_2->isChecked())
         {
@@ -212,8 +209,8 @@ void MainWindow::on_addShapeButton_2_clicked()
             double radZ = ui->lineEdit_DimZ->text().toDouble();
             newEllipsoid->set_size(radX,radY,radZ);
             newShape = newEllipsoid;
+            ListItem.append("Ellipsoid");
         }
-        //if(currentProperty == QString("color"))
 
         //Get and Set color properties
         double r = ui->lineEdit_ColorX->text().toDouble();
@@ -242,88 +239,14 @@ void MainWindow::on_addShapeButton_2_clicked()
         //Add the shape to the linked list and output the info to the user
         mLinkedList->push_back(newShape);
         ui->outputDockPlainText->appendPlainText(newShape->print());
-        ui->ListListWidget->addItem(QString(newShape->get_id()));
+
+        //Create a new listWidget item with the shape information.
+        ui->ListListWidget->addItem(ListItem);
         ui->ListListWidget->repaint();
         ui->ListListWidget->update();
-        //QListView *view =  ui->listView;
 
-
-        //    if (arg1 ==QString("ID Number"))
-        //    {
-        //      ui->label->setText(QString("ID number"));
-        //      ui->label_2->setText(QString(""));
-        //      ui->label_3->setText(QString(""));
-        //      ui->lineEdit->setDisabled(false);
-        //      ui->lineEdit_2->setDisabled(true);
-        //      ui->lineEdit_3->setDisabled(true);
-        //      currentProperty = "ID";
-        //    }
-        //    else if (arg1 == QString("Color"))
-        //    {
-        //        ui->label->setText(QString("Red:"));
-        //        ui->label_2->setText(QString("Green:"));
-        //        ui->label_3->setText(QString("Blue:"));
-        //        ui->lineEdit->setDisabled(false);
-        //        ui->lineEdit_2->setDisabled(false);
-        //        ui->lineEdit_3->setDisabled(false);
-        //        currentProperty = "color";
-        //    }
-        //    else if (arg1 == QString("Dimensions"))
-        //    {
-        //        ui->label->setText(QString("Height:"));
-        //        ui->label_2->setText(QString("Width:"));
-        //        ui->label_3->setText(QString("Depth:"));
-        //        ui->lineEdit->setDisabled(false);
-        //        ui->lineEdit_2->setDisabled(false);
-        //        ui->lineEdit_3->setDisabled(false);
-        //        currentProperty = "dimension";
-        //    }
-        //    else if (arg1 == QString("Translation"))
-        //    {
-        //        ui->label->setText(QString("X:"));
-        //        ui->label_2->setText(QString("Y:"));
-        //        ui->label_3->setText(QString("Z:"));
-        //        ui->lineEdit->setDisabled(false);
-        //        ui->lineEdit_2->setDisabled(false);
-        //        ui->lineEdit_3->setDisabled(false);
-        //        currentProperty = "translation";
-        //    }
-        //    else if (arg1 == QString("Rotation"))
-        //    {
-        //        ui->label->setText(QString("X:"));
-        //        ui->label_2->setText(QString("Y:"));
-        //        ui->label_3->setText(QString("Z:"));
-        //        ui->lineEdit->setDisabled(false);
-        //        ui->lineEdit_2->setDisabled(false);
-        //        ui->lineEdit_3->setDisabled(false);
-        //        currentProperty = "rotation";
-        //    }
-        //    else if (arg1 == QString("Scale"))
-        //    {
-        //        ui->label->setText(QString("X:"));
-        //        ui->label_2->setText(QString("Y:"));
-        //        ui->label_3->setText(QString("Z:"));
-        //        ui->lineEdit->setDisabled(false);
-        //        ui->lineEdit_2->setDisabled(false);
-        //        ui->lineEdit_3->setDisabled(false);
-        //        currentProperty = "scale";
-        //    }
-        //    else
-        //    {
-        //        ui->label->setText(QString(""));
-        //        ui->label_2->setText(QString(""));
-        //        ui->label_3->setText(QString(""));
-        //        ui->lineEdit->setDisabled(true);
-        //        ui->lineEdit_2->setDisabled(true);
-        //        ui->lineEdit_3->setDisabled(true);
-        //        currentProperty = "";
-        //    }
-        //    ui->label->update();
-        //    ui->label_2->update();
-        //    ui->label_3->update();
-        //    ui->lineEdit->update();
-        //    ui->lineEdit_2->update();
-        //    ui->lineEdit_3->update();
+        //Increment the shapes id for usability
+        ui->lineEdit_Id_2->setText(QString::number(id+1));
 
 }
 
