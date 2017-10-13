@@ -25,12 +25,12 @@ void Ellipsoid::set_size(double rx, double ry, double rz)
 QString Ellipsoid::print()
 {
     QString output;
-    output = "Cone ID: " + QString::number(mid) + "\n"
-            + "Translation: " + QString::number(mtx) + " " + QString::number(mty) + " " + QString::number(mtz) + "\n"
-            + "Rotations: " + QString::number(mrx) + " " + QString::number(mry) + " " + QString::number(mrz) + "\n"
-            + "Scales: " + QString::number(msx) + " " + QString::number(msy) + " " + QString::number(msz) + "\n"
-            + "Color R: " + QString::number(mred) + " " + QString::number(mgreen) + " " + QString::number(mblue) + "\n"
-            + "RadiusX: " + QString::number(mradx) + " RadiusY: " + QString::number(mrady) + " RadiusZ: " + QString::number(mradz)
+    output = "Ellipsoid ID: " + QString::number(mid) + "\n"
+            + "Translation: \n\tX:" + QString::number(mtx) + " \n\tX: " + QString::number(mty) + "\n\tZ: " + QString::number(mtz) + "\n"
+            + "Rotations: \n\tX:" + QString::number(mrx) + " \n\tY: " + QString::number(mry) + " \n\tZ: " + QString::number(mrz) + "\n"
+            + "Scales: \n\tX:" + QString::number(msx) + " \n\tY: " + QString::number(msy) + " \n\tZ: " + QString::number(msz) + "\n"
+            + "Color \n\tR: " + QString::number(mred) + " \n\tG: " + QString::number(mgreen) + " \n\tB: " + QString::number(mblue) + "\n"
+            + "Size: \n\tRadiusX: " + QString::number(mradx) + " \n\tRadiusY: " + QString::number(mrady) + " \n\tRadiusZ: " + QString::number(mradz)
             + "\n";
 
 //    std::cout << "Ellipsoid ID: " << mid << std::endl;

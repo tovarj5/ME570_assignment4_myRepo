@@ -16,15 +16,18 @@ public:
     bool read(QIODevice *device);
     QString errorString() const;
 
+signals:
+    void on_empty_input(QString name, QString property, double &value);
+
 protected:
     QXmlStreamReader mReader;
     //LinkedList* mLinkedList;
-    std::list<Shape*> mLinkedList;
+    std::list<Shape*> *mLinkedList;
     struct Vector3
     {
-        double mX{0};
-        double mY{0};
-        double mZ{0};
+        double mX{-1};
+        double mY{-1};
+        double mZ{-1};
     };
 
     void read_shapes();
@@ -35,6 +38,9 @@ protected:
     void read_id(int &id);//Reads id number from file. if empty, property is null.
     void read_color(Vector3 &color);
     void read_xyz(Vector3 &vec);
+
+
+
 };
 
 #endif // XMLSHAPESREADER_H

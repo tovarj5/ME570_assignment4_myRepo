@@ -4,6 +4,7 @@
 // Assignment: 3 - Linked-Lists with Pointers
 //--------------------------------------------
 #include "shape.h"
+#include "mainwindow.h"
 
 Shape::Shape(int id)
 {
@@ -13,6 +14,11 @@ Shape::Shape(int id)
 int Shape::get_id()
 {
     return mid;
+}
+
+void Shape::set_id(int id)
+{
+    mid = id;
 }
 
 void Shape::get_translation(double &tx, double &ty, double &tz)
@@ -60,11 +66,43 @@ r = mred;
 g = mgreen;
 b = mblue;
 }
+
 void Shape::set_color(double r, double g, double b)
 {
 mred = r;
 mgreen = g;
 mblue = b;
+}
+
+//void Shape::check_values(double cx, double cy, double cz, bool &valid) //QString property_name)//,int num)
+bool Shape::check_values(double cx, double cy, double cz)
+{
+
+    if (!(cx >= 0))
+    {
+        //num=1;
+        return false;
+        //valid = false;
+    }
+    else if(!(cy>=0))
+    {
+        //num =2;
+        return false;
+        //valid = false;
+    }
+    else if(!(cz >=0))
+    {
+        //num =3;
+        return false;
+        //valid = false;
+    }
+    else
+    return true;
+}
+
+void Shape::set_missing_value(double &mx, double &my, double &mz)
+{
+
 }
 
 QString Shape::print()

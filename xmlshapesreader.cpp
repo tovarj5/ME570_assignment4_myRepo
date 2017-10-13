@@ -1,16 +1,16 @@
 #include "xmlshapesreader.h"
 #include <QString>
-//#include "linkedlist.h"
 #include "shape.h"
 #include "box.h"
 #include "Cone.h"
 #include "Ellipsoid.h"
+#include "mainwindow.h"
 
-//XmlShapesReader::XmlShapesReader(std::list <Shape*> *linkedlist):
-//    mLinkedList{linkedlist}
-//{
-////    mLinkedList.push_back(linkedlist);
-//}
+XmlShapesReader::XmlShapesReader(std::list <Shape*> *linkedlist):
+    mLinkedList{linkedlist}
+{
+//    mLinkedList.push_back(linkedlist);
+}
 QString XmlShapesReader::errorString() const
 {
     return QObject::tr("%1\nLine %2, column %3")
@@ -45,7 +45,7 @@ void XmlShapesReader::read_shapes()
 
 void XmlShapesReader::read_shape()
 {
-    int id{0};
+    int id{-1};
     Vector3 color;
     Vector3 translation;
     Vector3 rotation;
@@ -78,12 +78,38 @@ void XmlShapesReader::read_shape()
     //Set the aquired properties into the shape class, then add the shape to the linked-list.
     if(shape!=nullptr)
     {
-        shape->set_color(color.mX,color.mY,color.mZ);
-        shape->set_translation(translation.mX,translation.mY,translation.mZ);
-        shape->set_rotation(rotation.mX,rotation.mY,rotation.mZ);
-        shape->set_scale(scale.mX,scale.mY,scale.mZ);
-        //mLinkedList->push_back(shape);
-        mLinkedList.push_back(shape);
+        //int invalid{-1};
+        //bool valid_values;
+        if(shape->get_id() >=0)
+        {
+
+            if (shape->check_values(color.mX,color.mY,color.mZ))//valid_values,invalid);
+                shape->set_color(color.mX,color.mY,color.mZ);
+            else
+                mReader.raiseError(QObject::tr("Corruption in file.\n Color value missing."));
+
+            if (shape->check_values(translation.mX,translation.mY,translation.mZ))
+                shape->set_translation(translation.mX,translation.mY,translation.mZ);
+            else
+                mReader.raiseError(QObject::tr("Corruption in file.\n Translation value missing."));
+
+            if (shape->check_values(rotation.mX,rotation.mY,rotation.mZ))
+                shape->set_rotation(rotation.mX,rotation.mY,rotation.mZ);
+            else
+                mReader.raiseError(QObject::tr("Corruption in file. Rotation value missing."));
+
+            if (shape->check_values(scale.mX,scale.mY,scale.mZ))
+                shape->set_scale(scale.mX,scale.mY,scale.mZ);
+            else
+                mReader.raiseError(QObject::tr("Corruption in file. Scale value missing."));
+
+            //mLinkedList->push_back(shape);
+            //if(valid_values)
+                mLinkedList->push_back(shape);
+
+        }
+        else
+            mReader.raiseError(QObject::tr("Corruption in file. \nMissing ID"));
     }
 
 
@@ -101,15 +127,24 @@ void XmlShapesReader::read_color(Vector3 &color)
     {
         if (mReader.name() == "red")
         {
-            color.mX = mReader.readElementText().toDouble();
+            if (!(mReader.readElementText().isNull()))
+                color.mX = mReader.readElementText().toDouble();
+            else
+            {
+                QString property_name = "color";
+                QString variable= "red";
+               //emit on_empty_input(property_name,variable, color.mX);
+            }
         }
         else if(mReader.name() == "green")
         {
-            color.mY = mReader.readElementText().toDouble();
+            if (!(mReader.readElementText().isNull()))
+                color.mY = mReader.readElementText().toDouble();
         }
         else if(mReader.name() == "blue")
         {
-            color.mZ = mReader.readElementText().toDouble();
+            if (!(mReader.readElementText().isNull()))
+                color.mZ = mReader.readElementText().toDouble();
         }
         else
             mReader.skipCurrentElement();
@@ -118,9 +153,9 @@ void XmlShapesReader::read_color(Vector3 &color)
 }
 void XmlShapesReader::read_xyz(Vector3 &vec)
 {
-    vec.mX=0;
-    vec.mY=0;
-    vec.mZ=0;
+    vec.mX=-1;
+    vec.mY=-1;
+    vec.mZ=-1;
 
     while(mReader.readNextStartElement())
     {
@@ -144,9 +179,9 @@ void XmlShapesReader::read_box(int id,Shape *&shape)
 {
     //Create new box with initialized properties, then fill in with values from the file.
     Box* box = new Box(id);
-    double height{1};
-    double width{1};
-    double depth{1};
+    double height{-1};
+    double width{-1};
+    double depth{-1};
 
     while(mReader.readNextStartElement())
     {
@@ -174,7 +209,7 @@ void XmlShapesReader::read_box(int id,Shape *&shape)
 void XmlShapesReader::read_cone(int id, Shape *&shape)
 {
     Cone *cone = new Cone(id);
-    double height{0}, rx{0}, ry{0};
+    double height{-1}, rx{-1}, ry{-1};
 
     //Read through file and get basic properties
     while (mReader.readNextStartElement())
@@ -204,7 +239,7 @@ void XmlShapesReader::read_cone(int id, Shape *&shape)
 void XmlShapesReader::read_ellipsoid(int id, Shape *&shape)
 {
     Ellipsoid *ellipse = new Ellipsoid(id);
-    double rx{0}, ry{0}, rz{0};
+    double rx{-1}, ry{-1}, rz{-1};
     Vector3 xyz_ellipsoid;
     mReader.readNextStartElement();
 

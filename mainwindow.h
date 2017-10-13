@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "shape.h"
 
 namespace Ui {
 class MainWindow;
@@ -14,6 +15,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    std::list<Shape*> *mLinkedList;
+    void on_emptyInput(QString XmlProperty, double &xmlValue);
 
 private slots:
     void on_actionAbout_triggered();
@@ -26,8 +29,38 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void print(QString output);
+
+    void clear_window();
+
+    void close();
+
+    void on_propertyComboBox_currentTextChanged(const QString &arg1);
+
+    void on_addShapeButton_clicked();
+
+    void on_propertyComboBox_activated(const QString &arg1);
+
+    void on_addShapeButton_2_clicked();
+
+    void on_boxRadioButton_2_toggled(bool checked);
+
+    void on_coneRadioButton_2_toggled(bool checked);
+
+    void on_ellipsoidRadioButton_2_toggled(bool checked);
+
+    void on_clearButton_2_clicked();
+
+    void on_actionOpen_Create_Shape_Dialog_triggered();
+
+    void on_actionOpen_Output_Dock_triggered();
+
 private:
     Ui::MainWindow *ui;
+    //QString ReadXmlLocation{""};
+    Shape *newShape{nullptr};
+    QString workingFile{""};
+//    bool read_xml(const QString& fileName,std::list<Shape*> *linked_list);
 };
 
 #endif // MAINWINDOW_H

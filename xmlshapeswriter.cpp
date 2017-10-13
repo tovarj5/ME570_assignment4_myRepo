@@ -3,12 +3,13 @@
 #include "shape.h"
 #include "Cone.h"
 #include "Ellipsoid.h"
+#include <QObject>
 
-//XmlShapesWriter::XmlShapesWriter(std::list <Shape*> * linkedlist):
-//    mLinkedList{linkedlist}
-//{
+XmlShapesWriter::XmlShapesWriter(std::list <Shape*> * linkedlist):
+    mLinkedList{linkedlist}
+{
 
-//}
+}
 void XmlShapesWriter::write(QIODevice *device)
 {
     mWriter.setDevice(device);
@@ -27,11 +28,13 @@ void XmlShapesWriter::write_shapes()
     mWriter.writeStartElement("shapes");
 
 //    for(int s=0;s<mLinkedList->size();s++)
-    for (int s=0;s<mLinkedList.size();s++)
+    for(Shape* shape : *mLinkedList)
+    //for (int s=0;s<mLinkedList->size();s++)
     {
-        Shape* shape{nullptr};
+
+        //Shape* shape{nullptr};
         //mLinkedList->get_at(s,shape);
-        mLinkedList.get_allocator();
+        //shape = mLinkedList->;
         write_shape(shape);
     }
 
@@ -45,11 +48,13 @@ void XmlShapesWriter::write_shape(Shape *shape)
     Vector3 translation;
     Vector3 rotation;
     Vector3 scale;
+    Vector3 color;
 
     id=shape->get_id();
     shape->get_translation(translation.mX,translation.mY,translation.mZ);
     shape->get_rotation(rotation.mX,rotation.mY,rotation.mZ);
     shape->get_scale(scale.mX,scale.mY,scale.mZ);
+    shape->get_color(color.mX,color.mY,color.mZ); //mX == red, mY == green, mZ == blue
 
 
     write_id(id);
@@ -66,6 +71,10 @@ void XmlShapesWriter::write_shape(Shape *shape)
 
     mWriter.writeStartElement("scale");
     write_xyz(scale);
+    mWriter.writeEndElement();
+
+    mWriter.writeStartElement("color");
+    write_color(color);
     mWriter.writeEndElement();
 
 

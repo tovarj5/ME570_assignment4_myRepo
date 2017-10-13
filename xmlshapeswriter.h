@@ -2,7 +2,7 @@
 #define XMLSHAPESWRITER_H
 #include <QIODevice>
 #include <QXmlStreamWriter>
-//#include "LinkedList.h"
+#include <QObject>
 
 class Shape;
 class Box;
@@ -21,7 +21,7 @@ protected:
     QXmlStreamWriter mWriter;
 
     //LinkedList* mLinkedList;
-    std::list<Shape*> mLinkedList;
+    std::list<Shape*> *mLinkedList;
 
     struct Vector3
     {

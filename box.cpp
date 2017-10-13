@@ -26,12 +26,12 @@ QString Box::print()
     test.number(mtx);
 
     QString output{""};
-    output.append("Box ID: ").append(mid).append("\n");
-    output.append("Translations: ").number(mtx).append(" ").number(mty).append(" ").number(mtz).append("\n");
-//    output.append("Rotations: ").append(mrx).append(" ").append(mry).append(" ").append(mrz).append("\n");
-//    output.append("Scales: ").append(msx).append(" ").append(msy).append(" ").append(msz).append("\n");
-//    output.append("Color: Red: ").append(mred).append(" Green: ").append(mgreeen).append(" Blue: ").append(mblue);
-//    output.append("Height: ").append(mheight).append(" Width: ").append(mwidth).append(" Depth: ").append(mdepth).append("\n");
+    output.append("Box ID: ").append(QString::number(mid)).append("\n");
+    output.append("Translations: \n\tX: ").append(QString::number(mtx)).append(" \n\tY: ").append(QString::number(mty)).append(" \n\tZ: ").append(QString::number(mtz)).append("\n");
+    output.append("Rotations: \n\tX: ").append(QString::number(mrx)).append(" \n\tY: ").append(QString::number(mry)).append(" \n\tZ: ").append(QString::number(mrz)).append("\n");
+    output.append("Scales: \n\tX: ").append(QString::number(msx)).append(" \n\tY: ").append(QString::number(msy)).append(" \n\tZ: ").append(QString::number(msz)).append("\n");
+    output.append("Color: \n\tRed: ").append(QString::number(mred)).append(" \n\tGreen: ").append(QString::number(mgreen)).append(" \n\tBlue: ").append(QString::number(mblue)).append("\n");
+    output.append("Size: \n\tHeight: ").append(QString::number(mheight)).append(" \n\tWidth: ").append(QString::number(mwidth)).append(" \n\tDepth: ").append(QString::number(mdepth)).append("\n");
 
 
 return output;
