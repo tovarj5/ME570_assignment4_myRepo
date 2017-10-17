@@ -163,7 +163,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Y:</string>
+          <string>Width:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -186,7 +186,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Z:</string>
+          <string>Depth:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -215,7 +215,7 @@
           </size>
          </property>
          <property name="text">
-          <string>X:</string>
+          <string>Height:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

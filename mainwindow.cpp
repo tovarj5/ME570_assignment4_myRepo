@@ -70,8 +70,11 @@ void MainWindow::on_actionOpen_triggered()
 
                     if (!shape_reader.read(&file))
                     {
-                        ui->outputDockPlainText->appendPlainText( "Parse error in file " );//+ shape_reader.errorString().data());
-                        //return false;
+                        QMessageBox *msgbox = new QMessageBox;
+                        QString message{"Parse error in file\nPlease review Xml File\n " + shape_reader.errorString()};
+                        msgbox->setText(message);
+                        ui->outputDockPlainText->appendPlainText( "Parse error in file. Please review Xml File\n " + shape_reader.errorString());
+                        msgbox->show();
                     }
                     if (mLinkedList!= nullptr && mLinkedList->size() >0)
                     {
@@ -79,6 +82,8 @@ void MainWindow::on_actionOpen_triggered()
                         for(Shape *s: *mLinkedList)     //for(int s=0;s<size;s++)
                         {
                             ui->outputDockPlainText->appendPlainText( s->print());
+                            QString ListItem = "Id: " + QString::number(s->get_id()) + "\t Shape: ...";
+                            ui->ListListWidget->addItem(ListItem);
                             //Shape* shape{nullptr};
                             //mLinkedList->get_at(s,shape);
                             //shape->print();
@@ -170,15 +175,29 @@ void MainWindow::on_emptyInput(QString XmlProperty, double &xmlValue)
 
 }
 
+void MainWindow::add_shape_to_UIlist(Shape *s)
+{
+    QString ListItem = "Id: " + QString::number(s->get_id()) + "\t Shape: ???";
+    ui->ListListWidget->addItem(ListItem);
+}
+
 
 void MainWindow::on_addShapeButton_2_clicked()
 {
+    //Create the message box with text notification incase there is a incorrect property
+    QMessageBox *msgbox = new QMessageBox;
+    QString message{"Missing property!\n Please enter all properties and add shape."};
+    msgbox->setText(message);
+    //(*msgbox).show();
+
     //Add the values of the current property to the new shape.
     double x,y,z;
+    bool valid{true};
     int id = ui->lineEdit_Id_2->text().toInt();
-    //Create string to add to the  Listwidget.
-    QString ListItem = "Id: " + QString::number(id) + "\t Shape: ";
-
+    if(id >0)
+    {
+        //Create string to add to the  Listwidget.
+        QString ListItem = "Id: " + QString::number(id) + "\t Shape: ";
 
         //If we are talking about the dimensions, find out what type of shape we are creating.
         if(ui->boxRadioButton_2->isChecked())
@@ -187,9 +206,20 @@ void MainWindow::on_addShapeButton_2_clicked()
             double h = ui->lineEdit_DimX->text().toDouble();
             double w = ui->lineEdit_DimY->text().toDouble();
             double d = ui->lineEdit_DimZ->text().toDouble();
-            newBox->set_size(h,w,d);
-            newShape = newBox;
-            ListItem.append("Box");
+            if(h==0 || w==0 || d==0)
+            {
+                //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+                //tr("You have not entered a property.\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
+                valid = false;
+                (*msgbox).show();
+            }
+            else
+            {
+                newBox->set_size(h,w,d);
+                newShape = newBox;
+                ListItem.append("Box");
+                //valid = true;
+            }
         }
         else if (ui->coneRadioButton_2->isChecked())
         {
@@ -197,9 +227,19 @@ void MainWindow::on_addShapeButton_2_clicked()
             double h = ui->lineEdit_DimX->text().toDouble();
             double radX = ui->lineEdit_DimY->text().toDouble();
             double radY = ui->lineEdit_DimZ->text().toDouble();
-            newCone->set_size(h,radX,radY);
-            newShape = newCone;
-            ListItem.append("Cone");
+            if(h==0 || radX==0 || radY==0)
+            {
+                //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+                //tr("You have not entered a property.\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
+                valid = false;
+                (*msgbox).show();
+            }
+            else
+            {
+                newCone->set_size(h,radX,radY);
+                newShape = newCone;
+                ListItem.append("Cone");
+            }
         }
         else if (ui->ellipsoidRadioButton_2->isChecked())
         {
@@ -207,47 +247,92 @@ void MainWindow::on_addShapeButton_2_clicked()
             double radX = ui->lineEdit_DimX->text().toDouble();
             double radY = ui->lineEdit_DimY->text().toDouble();
             double radZ = ui->lineEdit_DimZ->text().toDouble();
-            newEllipsoid->set_size(radX,radY,radZ);
-            newShape = newEllipsoid;
-            ListItem.append("Ellipsoid");
+            if(radX==0 || radY==0 || radZ==0)
+            {
+                //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+                //tr("You have not entered a property.\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
+                valid = false;
+                (*msgbox).show();
+            }
+            else
+            {
+                newEllipsoid->set_size(radX,radY,radZ);
+                newShape = newEllipsoid;
+                ListItem.append("Ellipsoid");
+            }
         }
 
         //Get and Set color properties
         double r = ui->lineEdit_ColorX->text().toDouble();
         double g = ui->lineEdit_ColorY->text().toDouble();
         double b = ui->lineEdit_ColorZ->text().toDouble();
-        newShape->set_color(r,g,b);
+        if(r==0 || g==0 || b==0)
+        {
+            //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+            //tr("You have not entered a property.\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
+            valid = false;
+            (*msgbox).show();
+        }
+        else
+            newShape->set_color(r,g,b);
 
         //Get Translation values from GUI and set them in the newShape
         x = ui->lineEdit_TranX->text().toDouble();
         y = ui->lineEdit_TranY->text().toDouble();
         z = ui->lineEdit_TranZ->text().toDouble();
-        newShape->set_translation(x,y,z);
+        if(x==0 || y==0 || z==0)
+        {
+            //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+            //tr("You have not entered a property.\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
+            valid = false;
+            (*msgbox).show();
+        }
+        else
+            newShape->set_translation(x,y,z);
 
         //Get and set Rotation values from the GUI into the newShape
         x = ui->lineEdit_RotX->text().toDouble();
         y = ui->lineEdit_RotY->text().toDouble();
         z = ui->lineEdit_RotZ->text().toDouble();
-        newShape->set_rotation(x,y,z);
+        if(x==0 || y==0 || z==0)
+        {
+            //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+            //tr("You have not entered a property.\nPlease enter a valid value of property:") 0,0,10000,5,&ok);
+            valid = false;
+            (*msgbox).show();
+        }
+        else
+            newShape->set_rotation(x,y,z);
 
         //Get and set Scale
         x = ui->lineEdit_ScaleX->text().toDouble();
         y = ui->lineEdit_ScaleY->text().toDouble();
         z = ui->lineEdit_ScaleZ->text().toDouble();
-        newShape->set_scale(x,y,z);
+        if(x==0 || y==0 || z==0)
+        {
+            //double value = QInputDialog::getDouble(this,tr("Missing Shape Property!"),
+            //tr("You have not entered a property.\nPlease enter a valid value of property:"),0,0,10000,5,&ok);
+            valid = false;
+            (*msgbox).show();
+        }
+        else
+            newShape->set_scale(x,y,z);
 
-        //Add the shape to the linked list and output the info to the user
-        mLinkedList->push_back(newShape);
-        ui->outputDockPlainText->appendPlainText(newShape->print());
+        if (valid)
+        {
+            //Add the shape to the linked list and output the info to the user
+            mLinkedList->push_back(newShape);
+            ui->outputDockPlainText->appendPlainText(newShape->print());
 
-        //Create a new listWidget item with the shape information.
-        ui->ListListWidget->addItem(ListItem);
-        ui->ListListWidget->repaint();
-        ui->ListListWidget->update();
+            //Create a new listWidget item with the shape information.
+            ui->ListListWidget->addItem(ListItem);
+            ui->ListListWidget->repaint();
+            ui->ListListWidget->update();
 
-        //Increment the shapes id for usability
-        ui->lineEdit_Id_2->setText(QString::number(id+1));
-
+            //Increment the shapes id for usability
+            ui->lineEdit_Id_2->setText(QString::number(id+1));
+        }
+    }
 }
 
 void MainWindow::on_boxRadioButton_2_toggled(bool checked)
@@ -304,7 +389,7 @@ void MainWindow::on_clearButton_2_clicked()
     ui->lineEdit_ScaleY->setText(QString(""));
     ui->lineEdit_ScaleZ->setText(QString(""));
 
-    ui->addShapeButton_2->setDisabled(true);
+    //ui->addShapeButton_2->setDisabled(true);
 }
 
 void MainWindow::on_actionOpen_Create_Shape_Dialog_triggered()

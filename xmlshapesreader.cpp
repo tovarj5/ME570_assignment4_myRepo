@@ -35,12 +35,16 @@ bool XmlShapesReader::read(QIODevice *device)
 
 void XmlShapesReader::read_shapes()
 {
+    int written_shapes{0};
     while(mReader.readNextStartElement())
     {
         if(mReader.name() == "shape")
+        {
+            written_shapes++;
             read_shape();
+        }
         else
-            mReader.skipCurrentElement();
+            mReader.raiseError(QString("No Shape!!")); //mReader.skipCurrentElement();
     }
 }
 
@@ -80,35 +84,50 @@ void XmlShapesReader::read_shape()
     if(shape!=nullptr)
     {
         //int invalid{-1};
-        //bool valid_values;
+        bool valid_values{true};
         if(shape->get_id() >=0)
         {
 
             if (shape->check_values(color.mX,color.mY,color.mZ))//valid_values,invalid);
                 shape->set_color(color.mX,color.mY,color.mZ);
             else
+            {
                 mReader.raiseError(QObject::tr("Corruption in file.\n Color value missing."));
+                valid_values = false;
+            }
 
             if (shape->check_values(translation.mX,translation.mY,translation.mZ))
                 shape->set_translation(translation.mX,translation.mY,translation.mZ);
             else
+            {
                 mReader.raiseError(QObject::tr("Corruption in file.\n Translation value missing."));
+                valid_values = false;
+            }
 
             if (shape->check_values(rotation.mX,rotation.mY,rotation.mZ))
                 shape->set_rotation(rotation.mX,rotation.mY,rotation.mZ);
             else
+            {
                 mReader.raiseError(QObject::tr("Corruption in file. Rotation value missing."));
+                valid_values = false;
+            }
 
             if (shape->check_values(scale.mX,scale.mY,scale.mZ))
                 shape->set_scale(scale.mX,scale.mY,scale.mZ);
             else
+            {
                 mReader.raiseError(QObject::tr("Corruption in file. Scale value missing."));
+                valid_values = false;
+            }
 
-            //if(valid_values)
+            if(valid_values)
+            {
                 mLinkedList->push_back(shape);
-
                 //FIND WAY TO ADD ITEM TO THE LISTWIDGET!!!!!!
 
+//                MainWindow *window = MainWindow::;
+//                window->add_shape_to_UIlist(shape);
+            }
         }
         else
             mReader.raiseError(QObject::tr("Corruption in file. \nMissing ID"));

@@ -28,7 +28,7 @@ QString Cone::print()
             + "Translation: \n\tX: " + QString::number(mtx) + " \n\tY:" + QString::number(mty) + " \n\tZ:" + QString::number(mtz) + "\n"
             + "Rotations: \n\tX:" + QString::number(mrx) + " \n\tY:" + QString::number(mry) + " \n\tZ:" + QString::number(mrz) + "\n"
             + "Scales: \n\tX:" + QString::number(msx) + " \n\tY:" + QString::number(msy) + " \n\tZ:" + QString::number(msz) + "\n"
-            + "Color \n\tX:R: " + QString::number(mred) + " \n\tG:" + QString::number(mgreen) + " \n\tB:" + QString::number(mblue) + "\n"
+            + "Color \n\tR: " + QString::number(mred) + " \n\tG:" + QString::number(mgreen) + " \n\tB:" + QString::number(mblue) + "\n"
             + "Size: \n\tHeight: " + QString::number(mheight) + " \n\tRadiusX: " + QString::number(mradx) + "\n\tRadiusY: " + QString::number(mrady) + "\n";
 
 //    std::cout << "Cone ID: " << mid << std::endl;

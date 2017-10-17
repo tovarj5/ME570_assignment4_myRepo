@@ -31,7 +31,6 @@ void XmlShapesWriter::write_shapes()
     for(Shape* shape : *mLinkedList)
     //for (int s=0;s<mLinkedList->size();s++)
     {
-
         //Shape* shape{nullptr};
         //mLinkedList->get_at(s,shape);
         //shape = mLinkedList->;

@@ -17,6 +17,7 @@ public:
     ~MainWindow();
     std::list<Shape*> *mLinkedList;
     void on_emptyInput(QString XmlProperty, double &xmlValue);
+    void add_shape_to_UIlist(Shape *s);
 
 private slots:
     void on_actionAbout_triggered();
