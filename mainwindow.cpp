@@ -57,7 +57,7 @@ void MainWindow::on_actionOpen_triggered()
         QFile file(selectedFile);
         if(!file.open(QFile::ReadOnly | QFile::Text))
         {
-            ui->outputDockPlainText->appendPlainText("Cannot read file - " + (selectedFile.split("/")).last()); //(file.errorString().data()));
+            ui->outputDockPlainText->appendPlainText("Cannot read file - " + (selectedFile.split("/")).last() + file.errorString());
            //return false;
         }
         else
@@ -84,6 +84,7 @@ void MainWindow::on_actionOpen_triggered()
                             ui->outputDockPlainText->appendPlainText( s->print());
                             QString ListItem = "Id: " + QString::number(s->get_id()) + "\t Shape: ...";
                             ui->ListListWidget->addItem(ListItem);
+                            ui->lineEdit_Id_2->setText(QString::number((mLinkedList->size())+1));
                             //Shape* shape{nullptr};
                             //mLinkedList->get_at(s,shape);
                             //shape->print();

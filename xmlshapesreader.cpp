@@ -148,23 +148,14 @@ void XmlShapesReader::read_color(Vector3 &color)
     {
         if (mReader.name() == "red")
         {
-            if (!(mReader.readElementText().isNull()))
-                color.mX = mReader.readElementText().toDouble();
-            else
-            {
-                QString property_name = "color";
-                QString variable= "red";
-               //emit on_empty_input(property_name,variable, color.mX);
-            }
+                color.mX = mReader.readElementText().toDouble();        
         }
         else if(mReader.name() == "green")
         {
-            if (!(mReader.readElementText().isNull()))
                 color.mY = mReader.readElementText().toDouble();
         }
         else if(mReader.name() == "blue")
         {
-            if (!(mReader.readElementText().isNull()))
                 color.mZ = mReader.readElementText().toDouble();
         }
         else
