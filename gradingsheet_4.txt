@@ -1,0 +1,57 @@
+Grading Sheet
+Assignment - 4 - Fun Wth Shapes GUI
+
+Name: Jacob Tovar
+
+Grade 46/50
+
+Comments:
+    Good job.  The design is clean and tight.  Could
+    use a little more polish with the file open, save and
+    save as interaction.
+
+    Please add authorship comments to the top of each file.
+    Otherwise your comments are OK.  They could probably
+    be a little more detailed.
+
+    Clean build.
+
+    Your main window class is getting kind of busy.  You may
+    want to consider moving the shape creating stuff into
+    another class.
+
+    As we talked about in class you probably, storing the
+    list as a pointer in your reader and writer class requires that
+    the pointer be checked whenever it is used.  It's better
+    to store it as a reference.
+
+    The Docks menu item isn't needed because you can always access them
+    by clicking on the menu bar with the right mouse button.  You just need
+    to give the docks a name in the designer.
+
+    Something appears to be broken with the file open.  It is only reading in
+    one shape.  At least that is what is printed out to the output window.
+
+    Corrupt and invalid files detected correctly.
+
+    The shape creation detected was able to detect an invalid input.  However
+    it did accept a -1 for some parameters that it shouldn't, box height -1.
+
+    Nice addition for unique ids.
+
+    The application should ask the user if they want to save their work before
+    exiting.
+
+    If no file has been opened or saved then the save action should work just
+    like the save as action.  It appears that the save action tries to save
+    a file with no file name.
+
+
+
+
+
+
+
+
+
+
